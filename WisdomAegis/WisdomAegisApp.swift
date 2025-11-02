@@ -1,17 +1,20 @@
-//
-//  WisdomAegisApp.swift
-//  WisdomAegis
-//
-//  Created by Артём Коротков on 31.10.2025.
-//
-
 import SwiftUI
 
 @main
 struct WisdomAegisApp: App {
+    
+    init() {
+        let stats = UserDefaultsManager.shared
+        let key = "didAddInitialCoins"
+        if !UserDefaults.standard.bool(forKey: key) {
+            stats.addCoins(5000)
+            UserDefaults.standard.set(true, forKey: key)
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WisdomMainView()
         }
     }
 }
