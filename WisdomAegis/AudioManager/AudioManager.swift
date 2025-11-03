@@ -32,6 +32,8 @@ class SoundManager: ObservableObject {
         loadSounds()
         
         NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: UserDefaults.didChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     private func loadSounds() {
@@ -94,6 +96,16 @@ class SoundManager: ObservableObject {
             if !soundState {
                 stopSoundEffects()
             }
+        }
+    }
+    
+    @objc private func appWillResignActive() {
+        stopBackgroundMusic()
+    }
+    
+    @objc private func appDidBecomeActive() {
+        if UserDefaults.standard.bool(forKey: "isOns") {
+            playBackgroundMusic()
         }
     }
 }
